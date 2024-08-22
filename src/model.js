@@ -2,10 +2,14 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite3'
+  storage: './database.sqlite3',
+  dialectOptions: {
+    // Increase the SQLite timeout
+    timeout: 30000 // 30 seconds
+  }
 });
 
-class Demo extends Sequelize.Model {}
+class Demo extends Sequelize.Model { }
 Demo.init(
   {
     id: {
@@ -25,20 +29,20 @@ Demo.init(
   }
 );
 
-class Frame extends Sequelize.Model {}
+class Frame extends Sequelize.Model { }
 Frame.init(
   {
     id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
-        primaryKey: true
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true
     },
     html: {
       type: Sequelize.TEXT,
       allowNull: false
     },
-    order:{
+    order: {
       type: Sequelize.INTEGER,
       allowNull: false
     }
@@ -49,8 +53,8 @@ Frame.init(
   }
 );
 
-Demo.hasMany(Frame, {as: 'frames', foreignKey: 'demoId'})
-Frame.belongsTo(Demo, {as: 'demo', foreignKey: 'demoId'})
+Demo.hasMany(Frame, { as: 'frames', foreignKey: 'demoId' })
+Frame.belongsTo(Demo, { as: 'demo', foreignKey: 'demoId' })
 
 module.exports = {
   sequelize,

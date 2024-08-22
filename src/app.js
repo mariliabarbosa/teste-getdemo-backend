@@ -1,15 +1,15 @@
 const express = require('express');
+const { sequelize } = require('./model');
+const router = require('./routes')
+const cors = require('cors')
 const bodyParser = require('body-parser');
-const {sequelize} = require('./model')
+
 const app = express();
+
+app.use(cors());
 app.use(bodyParser.json());
 app.set('sequelize', sequelize)
 app.set('models', sequelize.models)
-
-app.get('/demos', async (req, res) => {
-});
-
-app.put('/frames/:id', async (req, res) => {
-});
+app.use(router);
 
 module.exports = app;
